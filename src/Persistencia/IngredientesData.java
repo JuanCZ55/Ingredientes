@@ -26,6 +26,36 @@ public class IngredientesData {
         con = (Connection) Conexion.getConexion();
     }
 
+    public ArrayList<Ingredientes> listarIngredientes() {
+        ArrayList<Ingredientes> lista = new ArrayList<>();
+        String sql = "SELECT IdIngredientes, Nombre, CaloriasPor100, NoApto, Estado FROM ingredientes WHERE Estado=1";
+        Ingredientes ingredientes = null;
+        int x = 0;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ingredientes = new Ingredientes();
+                ingredientes.setIdIngredientes(rs.getInt("IdIngredientes"));
+                ingredientes.setNombre(rs.getString("Nombre"));
+                ingredientes.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
+                ingredientes.setNoApto(rs.getString("NoApto"));
+                ingredientes.setEstado(rs.getBoolean("Estado"));
+
+                lista.add(ingredientes);
+                x++;
+            }
+            if (x == 0) {
+                JOptionPane.showMessageDialog(null, "No hay Ingredientes");
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Ingredientes");
+        }
+        return lista;
+    }
+
     /**
      * listarAptos(String cond):Devuelve una lista de ingredientes apto para las
      * condiciones cronicas de salud (celiaco,diabetico,hipertenso). -Recibe por
@@ -43,7 +73,7 @@ public class IngredientesData {
         ArrayList<Ingredientes> lista = new ArrayList<>();
         int i = 1;
         int x = 0;
-        String sql = "SELECT * FROM ingredientes WHERE Estado = 1";
+        String sql = "SELECT * FROM ingredientes WHERE Estado = 1 ";
         HashSet<String> condSet = pd.convertirStringSet(cond);
         for (String aux : condSet) {
             sql += "AND NoApto NOT LIKE CONCAT('%', ?, '%')";
@@ -60,7 +90,6 @@ public class IngredientesData {
                 in.setIdIngredientes(rs.getInt("IdIngredientes"));
                 in.setNombre(rs.getString("Nombre"));
                 in.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
-                in.setPeso(rs.getDouble("Peso"));
                 in.setNoApto(rs.getString("NoApto"));
                 in.setEstado(rs.getBoolean("Estado"));
                 lista.add(in);
@@ -94,7 +123,6 @@ public class IngredientesData {
                     in.setIdIngredientes(rs.getInt("IdIngredientes"));
                     in.setNombre(rs.getString("Nombre"));
                     in.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
-                    in.setPeso(rs.getDouble("Peso"));
                     in.setNoApto(rs.getString("NoApto"));
                     in.setEstado(rs.getBoolean("Estado"));
                     lista.add(in);
@@ -128,7 +156,6 @@ public class IngredientesData {
                     in.setIdIngredientes(rs.getInt("IdIngredientes"));
                     in.setNombre(rs.getString("Nombre"));
                     in.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
-                    in.setPeso(rs.getDouble("Peso"));
                     in.setNoApto(rs.getString("NoApto"));
                     in.setEstado(rs.getBoolean("Estado"));
                     lista.add(in);
@@ -162,7 +189,6 @@ public class IngredientesData {
                     in.setIdIngredientes(rs.getInt("IdIngredientes"));
                     in.setNombre(rs.getString("Nombre"));
                     in.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
-                    in.setPeso(rs.getDouble("Peso"));
                     in.setNoApto(rs.getString("NoApto"));
                     in.setEstado(rs.getBoolean("Estado"));
                     lista.add(in);
@@ -193,7 +219,6 @@ public class IngredientesData {
                 ingr.setIdIngredientes(rs.getInt("IdIngrediente"));
                 ingr.setNombre(rs.getString("Nombre"));
                 ingr.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
-                ingr.setPeso(rs.getDouble("Peso"));
                 ingr.setEstado(rs.getBoolean("Estado"));
                 ingr.setNoApto(rs.getString("NoApto"));
                 lista.add(ingr);

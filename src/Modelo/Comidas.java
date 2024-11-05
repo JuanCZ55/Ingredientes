@@ -3,12 +3,15 @@ package Modelo;
 import java.util.ArrayList;
 
 public class Comidas {
+
     private int idComida;
     private String nombre;
     private String tipoDeComida;
     private double caloriasComida;
-    private String Apto;
+    private String noApto;
     private ArrayList<Ingredientes> ingredientes;
+    private ArrayList<Double> pesoIngre;
+//[idIgredientes]:[peso]-[idIgredientes]:[peso]-[idIgredientes]:[peso]-[idIgredientes]:[peso]-
     private boolean estado;
 
     public Comidas() {
@@ -22,14 +25,14 @@ public class Comidas {
         this.nombre = nombre;
         this.tipoDeComida = tipoDeComida;
         this.caloriasComida = caloriasComida;
-        this.Apto = noApto;
+        this.noApto = noApto;
     }
 
     public Comidas(String nombre, String tipoDeComida, double caloriasComida, String noApto, boolean estado) {
         this.nombre = nombre;
         this.tipoDeComida = tipoDeComida;
         this.caloriasComida = caloriasComida;
-        this.Apto = noApto;
+        this.noApto = noApto;
         this.estado = estado;
     }
 
@@ -38,8 +41,17 @@ public class Comidas {
         this.nombre = nombre;
         this.tipoDeComida = tipoDeComida;
         this.caloriasComida = caloriasComida;
-        this.Apto = noApto;
+        this.noApto = noApto;
         this.estado = estado;
+    }
+
+    public Comidas(String nombre, String tipoDeComida, double caloriasComida, String noApto, ArrayList<Ingredientes> ingredientes, ArrayList<Double> pesoIngre) {
+        this.nombre = nombre;
+        this.tipoDeComida = tipoDeComida;
+        this.caloriasComida = caloriasComida;
+        this.noApto = noApto;
+        this.ingredientes = ingredientes;
+        this.pesoIngre = pesoIngre;
     }
 
     public int getIdComida() {
@@ -75,11 +87,11 @@ public class Comidas {
     }
 
     public String getNoApto() {
-        return Apto;
+        return noApto;
     }
 
     public void setNoApto(String noApto) {
-        this.Apto = noApto;
+        this.noApto = noApto;
     }
 
     public ArrayList<Ingredientes> getIngredientes() {
@@ -90,6 +102,14 @@ public class Comidas {
         this.ingredientes = ingredientes;
     }
 
+    public ArrayList<Double> getPesoIngre() {
+        return pesoIngre;
+    }
+
+    public void setPesoIngre(ArrayList<Double> pesoIngre) {
+        this.pesoIngre = pesoIngre;
+    }
+
     public boolean isEstado() {
         return estado;
     }
@@ -97,6 +117,5 @@ public class Comidas {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
-    
+
 }
