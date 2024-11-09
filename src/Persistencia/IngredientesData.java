@@ -230,4 +230,27 @@ public class IngredientesData {
         }
         return lista;
     }
+
+    public Ingredientes buscarIngredientesID(int id) {
+        Ingredientes ingre = null;
+        String sql = "SELECT * FROM ingredientes WHERE Estado=1 AND IdIngredientes =?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ingre = new Ingredientes();
+                ingre.setIdIngredientes(rs.getInt("IdIngredientes"));
+                ingre.setNombre(rs.getString("Nombre"));
+                ingre.setCaloriasPor100(rs.getDouble("CaloriasPor100"));
+                ingre.setNoApto(rs.getString("NoApto"));
+                ingre.setEstado(rs.getBoolean("Estado"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al buscar por id en Ingredientes");
+        }
+        return ingre;
+    }
 }

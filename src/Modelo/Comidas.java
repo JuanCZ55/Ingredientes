@@ -9,9 +9,6 @@ public class Comidas {
     private String tipoDeComida;
     private double caloriasComida;
     private String noApto;
-    private ArrayList<Ingredientes> ingredientes;
-    private ArrayList<Double> pesoIngre;
-//[idIgredientes]:[peso]-[idIgredientes]:[peso]-[idIgredientes]:[peso]-[idIgredientes]:[peso]-
     private boolean estado;
 
     public Comidas() {
@@ -45,14 +42,18 @@ public class Comidas {
         this.estado = estado;
     }
 
-    public Comidas(String nombre, String tipoDeComida, double caloriasComida, String noApto, ArrayList<Ingredientes> ingredientes, ArrayList<Double> pesoIngre) {
+    public Comidas(int idComida, String nombre, String tipoDeComida, double caloriasComida) {
+        this.idComida = idComida;
         this.nombre = nombre;
         this.tipoDeComida = tipoDeComida;
         this.caloriasComida = caloriasComida;
-        this.noApto = noApto;
-        this.ingredientes = ingredientes;
-        this.pesoIngre = pesoIngre;
     }
+
+  
+
+    
+
+   
 
     public int getIdComida() {
         return idComida;
@@ -94,21 +95,7 @@ public class Comidas {
         this.noApto = noApto;
     }
 
-    public ArrayList<Ingredientes> getIngredientes() {
-        return ingredientes;
-    }
-
-    public void setIngredientes(ArrayList<Ingredientes> ingredientes) {
-        this.ingredientes = ingredientes;
-    }
-
-    public ArrayList<Double> getPesoIngre() {
-        return pesoIngre;
-    }
-
-    public void setPesoIngre(ArrayList<Double> pesoIngre) {
-        this.pesoIngre = pesoIngre;
-    }
+     
 
     public boolean isEstado() {
         return estado;

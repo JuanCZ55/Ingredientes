@@ -4,8 +4,16 @@ import Modelo.Comidas;
 import Modelo.Ingredientes;
 import Persistencia.ComidasData;
 import Persistencia.IngredientesData;
+import java.awt.TextField;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,16 +23,20 @@ import javax.swing.table.DefaultTableModel;
 public class CrearComidas extends javax.swing.JInternalFrame {
 
     private DefaultTableModel modelo;
-    private Ingredientes[] arrIngre = new Ingredientes[5];
     private IngredientesData id = new IngredientesData();
-    private double[] arrCalorias = new double[5];
     private ComidasData cd = new ComidasData();
+
+    private HashMap<Integer, Double> ingredientesPesos = new HashMap<>();
 
     public CrearComidas() {
         initComponents();
         cargarVacio();
 
         cargarIngredientes();
+        JBModificar.setEnabled(false);
+        JBAlta.setEnabled(false);
+        JBBaja.setEnabled(false);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -54,10 +66,12 @@ public class CrearComidas extends javax.swing.JInternalFrame {
         JTF4 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         JBAlta = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jBBuscar = new javax.swing.JButton();
         JBModificar = new javax.swing.JButton();
         JBBaja = new javax.swing.JButton();
         JBNuevo = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        JTFid = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Crear Comidas");
@@ -132,10 +146,10 @@ public class CrearComidas extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Buscar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jBBuscar.setText("Buscar");
+        jBBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jBBuscarActionPerformed(evt);
             }
         });
 
@@ -160,15 +174,20 @@ public class CrearComidas extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setText("ID:");
+
+        JTFid.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JTFidKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(217, 217, 217)
-                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,7 +200,8 @@ public class CrearComidas extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(34, 34, 34)
@@ -204,34 +224,40 @@ public class CrearComidas extends javax.swing.JInternalFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(JTFid, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jBBuscar))
                                             .addComponent(JTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(JCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton2))))
+                                            .addComponent(JCBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(JBNuevo)
-                                        .addGap(48, 48, 48)
-                                        .addComponent(JBModificar)
-                                        .addGap(50, 50, 50)
-                                        .addComponent(JBAlta)
-                                        .addGap(95, 95, 95)
-                                        .addComponent(JBBaja)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(JBNuevo)
+                                .addGap(48, 48, 48)
+                                .addComponent(JBModificar)
+                                .addGap(50, 50, 50)
+                                .addComponent(JBAlta)
+                                .addGap(95, 95, 95)
+                                .addComponent(JBBaja))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(jLabel1)))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addGap(40, 40, 40)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBBuscar)
+                    .addComponent(jLabel6)
+                    .addComponent(JTFid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(JTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(JTFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -263,7 +289,7 @@ public class CrearComidas extends javax.swing.JInternalFrame {
                     .addComponent(jLabel12)
                     .addComponent(JCBIng5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JTF5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JBNuevo)
                     .addComponent(JBModificar)
@@ -293,56 +319,103 @@ public class CrearComidas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_JCBTipoActionPerformed
 
-    private void JBAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAltaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JBAltaActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void JBModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBModificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JBModificarActionPerformed
-
-    private void JBBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBBajaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JBBajaActionPerformed
-
-    private void JBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNuevoActionPerformed
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
+        JBModificar.setEnabled(true);
         try {
-            String nom = JTFNombre.getText();
-            String tipo = (String) JCBTipo.getSelectedItem();
-            ArrayList<Ingredientes> arraylistIngre = new ArrayList<>();
-            ArrayList<Double> lista = new ArrayList<>();
-            double caltotales = caloriasTotales();
+            int idComida = Integer.parseInt(JTFid.getText());
+            if (idComida <= 0) {
+                JOptionPane.showMessageDialog(this, "El ID debe ser un numero mayor a 0.");
+                return;
+            }
+            Comidas comida = cd.buscarComidas(idComida);
+
+            JTFNombre.setText(comida.getNombre());
+            JCBTipo.setSelectedItem(comida.getTipoDeComida());
+            HashMap<Integer, Double> ing = cd.buscarIngredientesComidas(idComida);
+            ArrayList<JComboBox> jcbs = new ArrayList<>();
+            jcbs.add(JCBIng1);
+            jcbs.add(JCBIng2);
+            jcbs.add(JCBIng3);
+            jcbs.add(JCBIng4);
+            jcbs.add(JCBIng5);
+            ArrayList<JTextField> txts = new ArrayList<>();
+            txts.add(JTF1);
+            txts.add(JTF2);
+            txts.add(JTF3);
+            txts.add(JTF4);
+            txts.add(JTF5);
             int i = 0;
-            for (Ingredientes in : arrIngre) {
-                if (in != null) {
-                    arraylistIngre.add(in);
-                    int idIngrediente = in.getIdIngredientes();
-                    lista.add((double) idIngrediente);
-                    lista.add(arrCalorias[i]);
-                }
+            for (HashMap.Entry<Integer, Double> ipa : ing.entrySet()) {
+                JComboBox combo = jcbs.get(i);
+                JTextField jt = txts.get(i);
+                Ingredientes ingrediente = id.buscarIngredientesID(ipa.getKey());
+                combo.setSelectedItem(ingrediente);
+                jt.setText(String.valueOf(ipa.getValue()));
                 i++;
             }
-
-            if (nom == null || nom.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un nombre");
-            }
-            Comidas com = new Comidas(nom, tipo, caltotales, null, arraylistIngre, lista);
-            if (caltotales > 0) {
-                cd.crearComida(com);
-            }
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(this, "Complete los Campos");
-
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Caracteres Invalidos");
+            JOptionPane.showMessageDialog(null, "Ingrese un número válido en el campo ID.");
+        }
 
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Error en el constructor");
+    }//GEN-LAST:event_jBBuscarActionPerformed
 
+    private void JBModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBModificarActionPerformed
+
+        if (controlPesos()) {
+            try {
+                int id = Integer.parseInt(JTFid.getText());
+                if (id <= 0) {
+                    JOptionPane.showMessageDialog(this, "El ID debe ser un numero mayor a 0.");
+                    return;
+                }
+                String nom = JTFNombre.getText();
+                String tipo = (String) JCBTipo.getSelectedItem();
+                double caloriasT = cd.caloriasComidas(ingredientesPesos);
+                if (nom == null || nom.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Ingrese un nombre");
+                    return;
+
+                }
+                Comidas com = new Comidas(id, nom, tipo, caloriasT);
+                if (cd.modificarComida(com, ingredientesPesos)) {
+                    setNulo();
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Ingrese un numero valido en el campo ID.");
+
+            }
+        }
+
+    }//GEN-LAST:event_JBModificarActionPerformed
+
+    private void JBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBNuevoActionPerformed
+        if (controlPesos()) {
+            try {
+                String nom = JTFNombre.getText();
+                String tipo = (String) JCBTipo.getSelectedItem();
+                double caloriasT = cd.caloriasComidas(ingredientesPesos);
+                boolean a = false;
+                if (nom == null || nom.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Ingrese un nombre");
+                    return;
+
+                }
+                Comidas com = new Comidas(nom, tipo, caloriasT, null);
+                a = cd.crearComida(com, ingredientesPesos);
+
+                if (a) {
+                    setNulo();
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(this, "Complete los Campos");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Caracteres Invalidos");
+
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Error en el constructor");
+
+            }
         }
     }//GEN-LAST:event_JBNuevoActionPerformed
 
@@ -365,6 +438,37 @@ public class CrearComidas extends javax.swing.JInternalFrame {
     private void JCBIng5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCBIng5ActionPerformed
         habilitarPeso();
     }//GEN-LAST:event_JCBIng5ActionPerformed
+
+    private void JTFidKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTFidKeyReleased
+        if (JTFid.getText().isEmpty()) {
+            JBModificar.setEnabled(false);
+            JBAlta.setEnabled(false);
+            JBBaja.setEnabled(false);
+        } else {
+            JBModificar.setEnabled(true);
+            JBAlta.setEnabled(true);
+            JBBaja.setEnabled(true);
+        }    }//GEN-LAST:event_JTFidKeyReleased
+
+    private void JBAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBAltaActionPerformed
+        try {
+            int id = Integer.parseInt(JTFid.getText());
+            cd.altaComidas(id);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese unicamente numeros en ID");
+
+        }
+    }//GEN-LAST:event_JBAltaActionPerformed
+
+    private void JBBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBBajaActionPerformed
+        try {
+            int id = Integer.parseInt(JTFid.getText());
+            cd.bajaComidas(id);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese unicamente numeros en ID");
+
+        }
+    }//GEN-LAST:event_JBBajaActionPerformed
     private void cargarIngredientes() {
         for (Ingredientes ingre : id.listarIngredientes()) {
             JCBIng1.addItem(ingre);
@@ -383,132 +487,195 @@ public class CrearComidas extends javax.swing.JInternalFrame {
         JCBIng5.addItem(null);
     }
 
+    public void setNulo() {
+        JTFid.setText("");
+        JTFNombre.setText("");
+        JCBIng1.setSelectedItem(null);
+        JCBIng2.setSelectedItem(null);
+        JCBIng3.setSelectedItem(null);
+        JCBIng4.setSelectedItem(null);
+        JCBIng5.setSelectedItem(null);
+        ingredientesPesos.clear();
+
+    }
+
     private void habilitarPeso() {
-        Ingredientes ele1 = (Ingredientes) JCBIng1.getSelectedItem();
-        if (ele1 != null) {
+        if (JCBIng1.getSelectedItem() != null) {
             JTF1.setEnabled(true);
-            arrIngre[0] = ele1;
         } else {
+            JTF1.setText("");
             JTF1.setEnabled(false);
-            arrIngre[0] = null;
         }
-        Ingredientes ele2 = (Ingredientes) JCBIng2.getSelectedItem();
-        if (ele2 != null) {
+        if (JCBIng2.getSelectedItem() != null) {
             JTF2.setEnabled(true);
-            arrIngre[1] = ele2;
         } else {
-
+            JTF2.setText("");
             JTF2.setEnabled(false);
-            arrIngre[1] = null;
         }
-        Ingredientes ele3 = (Ingredientes) JCBIng3.getSelectedItem();
-        if (ele3 != null) {
+        if (JCBIng3.getSelectedItem() != null) {
             JTF3.setEnabled(true);
-            arrIngre[2] = ele3;
         } else {
-
+            JTF3.setText("");
             JTF3.setEnabled(false);
-            arrIngre[2] = null;
         }
-        Ingredientes ele4 = (Ingredientes) JCBIng4.getSelectedItem();
-        if (ele4 != null) {
+        if (JCBIng4.getSelectedItem() != null) {
             JTF4.setEnabled(true);
-            arrIngre[3] = ele4;
         } else {
-
+            JTF4.setText("");
             JTF4.setEnabled(false);
-            arrIngre[3] = null;
         }
-        Ingredientes ele5 = (Ingredientes) JCBIng5.getSelectedItem();
-        if (ele5 != null) {
+        if (JCBIng5.getSelectedItem() != null) {
             JTF5.setEnabled(true);
-            arrIngre[4] = ele5;
         } else {
-
+            JTF5.setText("");
             JTF5.setEnabled(false);
-            arrIngre[4] = null;
         }
     }
 
-    public int cuantosIngre() {
-        int cantidad = 0;
-        for (Ingredientes aux : arrIngre) {
-            if (aux != null) {
-                cantidad++;
-            }
-        }
-        return cantidad;
-    }
+    public boolean controlPesos() {
+        Ingredientes ele1 = (Ingredientes) JCBIng1.getSelectedItem();
+        Ingredientes ele2 = (Ingredientes) JCBIng2.getSelectedItem();
+        Ingredientes ele3 = (Ingredientes) JCBIng3.getSelectedItem();
+        Ingredientes ele4 = (Ingredientes) JCBIng4.getSelectedItem();
+        Ingredientes ele5 = (Ingredientes) JCBIng5.getSelectedItem();
 
-    public double caloriasTotales() {
-        double tot = 0;
+        // Set para almacenar los IDs de los ingredientes seleccionados
+        Set<Integer> ingredientesSeleccionados = new HashSet<>();
+        boolean validPesos = true;
+        int cant = 0;
 
         try {
-            // Inicializa las variables antes de usarlas
             double a = 0;
             double b = 0;
             double c = 0;
             double d = 0;
             double e = 0;
 
-            // Comprobar que cada JComboBox tenga un ingrediente seleccionado antes de intentar obtener el peso
-            if (JCBIng1.getSelectedItem() != null) {
-                a = Double.valueOf(JTF1.getText());
-                if (a > 0) {
-                    arrCalorias[0] = a;
-                    tot += a;
+            if (ele1 != null) {
+                if (ingredientesSeleccionados.contains(ele1.getIdIngredientes())) {
+                    JCBIng1.setSelectedItem(null);
+                    validPesos = false;
+                    JOptionPane.showMessageDialog(this, "El ingrediente " + ele1.getNombre() + " ya fue seleccionado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ingrese peso válido y mayor a 0 en el primer ingrediente");
+                    ingredientesSeleccionados.add(ele1.getIdIngredientes());
+                    if (!JTF1.getText().isEmpty()) {
+                        a = Double.parseDouble(JTF1.getText());
+                        if (a > 0) {
+                            ingredientesPesos.put(ele1.getIdIngredientes(), a);
+                            cant++;
+                        } else {
+                            validPesos = false;
+                            JOptionPane.showMessageDialog(this, "Ingrese peso valido y mayor a 0 en el primer ingrediente");
+                        }
+                    } else {
+                        validPesos = false;
+                        JOptionPane.showMessageDialog(this, "Ingrese peso valido para el primer ingrediente");
+                    }
                 }
             }
 
-            if (JCBIng2.getSelectedItem() != null) {
-                b = Double.valueOf(JTF2.getText());
-                if (b > 0) {
-                    arrCalorias[1] = b;
-                    tot += b;
+            if (ele2 != null) {
+                if (ingredientesSeleccionados.contains(ele2.getIdIngredientes())) {
+                    JCBIng2.setSelectedItem(null);
+                    validPesos = false;
+                    JOptionPane.showMessageDialog(this, "El ingrediente " + ele2.getNombre() + " ya fue seleccionado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ingrese peso válido y mayor a 0 en el segundo ingrediente");
+                    ingredientesSeleccionados.add(ele2.getIdIngredientes());
+                    if (!JTF2.getText().isEmpty()) {
+                        b = Double.parseDouble(JTF2.getText());
+                        if (b > 0) {
+                            ingredientesPesos.put(ele2.getIdIngredientes(), b);
+                            cant++;
+                        } else {
+                            validPesos = false;
+                            JOptionPane.showMessageDialog(this, "Ingrese peso valido y mayor a 0 en el segundo ingrediente");
+                        }
+                    } else {
+                        validPesos = false;
+                        JOptionPane.showMessageDialog(this, "Ingrese peso valido para el segundo ingrediente");
+                    }
                 }
             }
 
-            if (JCBIng3.getSelectedItem() != null) {
-                c = Double.valueOf(JTF3.getText());
-                if (c > 0) {
-                    arrCalorias[2] = c;
-                    tot += c;
+            if (ele3 != null) {
+                if (ingredientesSeleccionados.contains(ele3.getIdIngredientes())) {
+                    JCBIng3.setSelectedItem(null);
+                    validPesos = false;
+                    JOptionPane.showMessageDialog(this, "El ingrediente " + ele3.getNombre() + " ya fue seleccionado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ingrese peso válido y mayor a 0 en el tercer ingrediente");
+                    ingredientesSeleccionados.add(ele3.getIdIngredientes());
+                    if (!JTF3.getText().isEmpty()) {
+                        c = Double.parseDouble(JTF3.getText());
+                        if (c > 0) {
+                            ingredientesPesos.put(ele3.getIdIngredientes(), c);
+                            cant++;
+                        } else {
+                            validPesos = false;
+                            JOptionPane.showMessageDialog(this, "Ingrese peso valido y mayor a 0 en el tercer ingrediente");
+                        }
+                    } else {
+                        validPesos = false;
+                        JOptionPane.showMessageDialog(this, "Ingrese peso valido para el tercer ingrediente");
+                    }
                 }
             }
 
-            if (JCBIng4.getSelectedItem() != null) {
-                d = Double.valueOf(JTF4.getText());
-                if (d > 0) {
-                    arrCalorias[3] = d;
-                    tot += d;
+            if (ele4 != null) {
+                if (ingredientesSeleccionados.contains(ele4.getIdIngredientes())) {
+                    JCBIng4.setSelectedItem(null);
+                    validPesos = false;
+                    JOptionPane.showMessageDialog(this, "El ingrediente " + ele4.getNombre() + " ya fue seleccionado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ingrese peso válido y mayor a 0 en el cuarto ingrediente");
+                    ingredientesSeleccionados.add(ele4.getIdIngredientes());
+                    if (!JTF4.getText().isEmpty()) {
+                        d = Double.parseDouble(JTF4.getText());
+                        if (d > 0) {
+                            ingredientesPesos.put(ele4.getIdIngredientes(), d);
+                            cant++;
+                        } else {
+                            validPesos = false;
+                            JOptionPane.showMessageDialog(this, "Ingrese peso valido y mayor a 0 en el cuarto ingrediente");
+                        }
+                    } else {
+                        validPesos = false;
+                        JOptionPane.showMessageDialog(this, "Ingrese peso valido para el cuarto ingrediente");
+                    }
                 }
             }
 
-            if (JCBIng5.getSelectedItem() != null) {
-                e = Double.valueOf(JTF5.getText());
-                if (e > 0) {
-                    arrCalorias[4] = e;
-                    tot += e;
+            if (ele5 != null) {
+                if (ingredientesSeleccionados.contains(ele5.getIdIngredientes())) {
+                    JCBIng5.setSelectedItem(null);
+                    validPesos = false;
+                    JOptionPane.showMessageDialog(this, "El ingrediente " + ele5.getNombre() + " ya fue seleccionado.");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Ingrese peso válido y mayor a 0 en el quinto ingrediente");
+                    ingredientesSeleccionados.add(ele5.getIdIngredientes());
+                    if (!JTF5.getText().isEmpty()) {
+                        e = Double.parseDouble(JTF5.getText());
+                        if (e > 0) {
+                            ingredientesPesos.put(ele5.getIdIngredientes(), e);
+                            cant++;
+                        } else {
+                            validPesos = false;
+                            JOptionPane.showMessageDialog(this, "Ingrese peso valido y mayor a 0 en el quinto ingrediente");
+                        }
+                    } else {
+                        validPesos = false;
+                        JOptionPane.showMessageDialog(this, "Ingrese peso valido para el quinto ingrediente");
+                    }
                 }
             }
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese valores válidos para los pesos");
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese valores válidos para los pesos");
+            if (cant < 2) {
+                validPesos = false;
+                JOptionPane.showMessageDialog(this, "Debe seleccionar al menos 2 ingredientes con pesos validos.");
+            }
+        } catch (NumberFormatException | NullPointerException ex) {
+            validPesos = false;
+            JOptionPane.showMessageDialog(this, "Ingrese valores validos para los pesos");
         }
 
-        return tot; // Retornar el total
+        return validPesos;
     }
 
 
@@ -529,7 +696,8 @@ public class CrearComidas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField JTF4;
     private javax.swing.JTextField JTF5;
     private javax.swing.JTextField JTFNombre;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField JTFid;
+    private javax.swing.JButton jBBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -538,6 +706,7 @@ public class CrearComidas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
